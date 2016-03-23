@@ -1,13 +1,13 @@
 {
-    "name": "hanischit/codeigniter-restserver",
+    "name": "transfuse/codeigniter-restserver",
     "type": "library",
-    "description": "A fully RESTful server implementation for CodeIgniter using one library, one config file and one controller.",
+    "description": "A fully RESTful server implementation for CodeIgniter 2 and 3 using one library, one config file and one controller.",
 	"keywords": ["codeigniter","restserver"],
-    "homepage": "https://github.com/Hanisch-IT/codeigniter-restserver",
+    "homepage": "https://github.com/transfuse/codeigniter-restserver",
     "authors": [
 	    {
-            "name": "Fabian Hanisch",
-			"email": "kontakt@hanisch-it.de"
+            "name": "Transfuse Inc.",
+			"email": "hello@transfuseinc.com"
 			}
         
     ],
