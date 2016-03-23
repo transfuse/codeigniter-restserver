@@ -371,6 +371,8 @@ abstract class REST_Controller extends \CI_Controller {
     {
     }
 
+    private $_ci_version = 0; 
+
     /**
      * Constructor for the REST API
      *
@@ -393,18 +395,24 @@ abstract class REST_Controller extends \CI_Controller {
             throw new Exception('Using PHP v' . PHP_VERSION . ', though PHP v5.4 or greater is required');
         }
 
-        // Check to see if this is CI 3.x
-        if (explode('.', CI_VERSION, 2)[0] < 3)
+        // Get the CodeIgniter version
+        $this->_ci_version = explode('.', CI_VERSION, 2)[0];
+
+        // Check to see if this is atleast CI 2.x
+        if ($this-?_ci_version < 2)
         {
-            throw new Exception('REST Server requires CodeIgniter 3.x');
+            throw new Exception('REST Server requires atleast CodeIgniter 2.x');
         }
 
         // Set the default value of global xss filtering. Same approach as CodeIgniter 3
         $this->_enable_xss = ($this->config->item('global_xss_filtering') === TRUE);
 
         // Don't try to parse template variables like {elapsed_time} and {memory_usage}
-        // when output is displayed for not damaging data accidentally
-        $this->output->parse_exec_vars = FALSE;
+        // when output is displayed for not damaging data accidentally only if the CI_VERSION
+        // is greater than 2
+        if ($this->_ci_version > 2) {
+            $this->output->parse_exec_vars = FALSE;
+        }
 
         // Start the timer for how long the request takes
         $this->_start_rtime = microtime(TRUE);
@@ -461,7 +469,11 @@ abstract class REST_Controller extends \CI_Controller {
         }
 
         // Determine whether the connection is HTTPS
-        $this->request->ssl = is_https();
+        if ($this->_ci_version < 3) {
+            $this->request->ssl = $this->is_https();
+        } else {
+            $this->request->ssl = is_https();
+        }
 
         // How is this request being made? GET, POST, PATCH, DELETE, INSERT, PUT, HEAD or OPTIONS
         $this->request->method = $this->_detect_method();
@@ -569,6 +581,24 @@ abstract class REST_Controller extends \CI_Controller {
                 $this->_check_whitelist_auth();
             }
         }
+    }
+
+    // Implementation copied from CodeIgniter 3.x
+    private function is_https()
+    {
+        if ( ! empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
+        {
+            return TRUE;
+        }
+        elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+        {
+            return TRUE;
+        }
+        elseif ( ! empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off')
+        {
+            return TRUE;
+        }
+        return FALSE;
     }
 
     /**
@@ -971,7 +1001,11 @@ abstract class REST_Controller extends \CI_Controller {
         if (empty($method))
         {
             // Get the request method as a lowercase string
-            $method = $this->input->method();
+            if ($this->_ci_version < 3) {
+                $method = $this->input->server('REQUEST_METHOD');
+            } else {
+                $method = $this->input->method();
+            }
         }
 
         return in_array($method, $this->allowed_http_methods) && method_exists($this, '_parse_' . $method) ? $method : 'get';
