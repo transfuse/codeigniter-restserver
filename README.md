@@ -1,26 +1,26 @@
 # CodeIgniter Rest Server
 
-A fully RESTful server implementation for CodeIgniter using one library, one config file and one controller.
+A fully RESTful server implementation for CodeIgniter 2 and 3 using one library, one config file and one controller.
 
-Original from: (https://github.com/chriskacerguis/codeigniter-restserver). Now composer friendly
+Originally from: (https://github.com/Hanisch-IT/codeigniter-restserver).
 
 ## Requirements
 
 1. PHP 5.4 or greater
-2. CodeIgniter 3.0+
+2. CodeIgniter 2.0+
 
 ## Installation & loading
 
-Rest Server is available via [Composer/Packagist](https://packagist.org/packages/hanischit/codeigniter-restserver) (using semantic versioning), so just add this line to your `composer.json` file:
+Rest Server is available via [Composer/Packagist](https://packagist.org/packages/transfuse/codeigniter-restserver) (using semantic versioning), so just add this line to your `composer.json` file:
 
 ```json
-"hanischit/codeigniter-restserver": "^1.0"
+"transfuse/codeigniter-restserver": "^1.0"
 ```
 
 or
 
 ```sh
-composer require hanischit/codeigniter-restserver
+composer require transfuse/codeigniter-restserver
 ```
 
 ## Handling Requests
