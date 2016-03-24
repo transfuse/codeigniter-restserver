@@ -399,7 +399,7 @@ abstract class REST_Controller extends \CI_Controller {
         $this->_ci_version = explode('.', CI_VERSION, 2)[0];
 
         // Check to see if this is atleast CI 2.x
-        if ($this-?_ci_version < 2)
+        if ($this->_ci_version < 2)
         {
             throw new Exception('REST Server requires atleast CodeIgniter 2.x');
         }
